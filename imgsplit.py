@@ -19,8 +19,8 @@ for file in os.listdir("."):
 		statePos = 2
 		stateRotate = 3
 
-		imgFile = Image.open("att_pin.png")
-		file = open("att_pin.plist", "rb")
+		# imgFile = Image.open("att_pin.png")
+		# file = open("att_pin.plist", "rb")
 		reName = re.compile(r".*<key>games/.*/(.*?)/(.*?.png)</key>.*")
 		rePos = re.compile(r".*<string>{{(\d+),(\d+)},{(\d+),(\d+)}}</string>.*")
 		reRotate = re.compile(r".*(<false/>)|(<true/>).*")
@@ -41,8 +41,8 @@ for file in os.listdir("."):
 					filePath = result.group(1)
 					fileName = result.group(2)
 					curState = statePos
-					print(filePath)
-					print(fileName)
+					# print(filePath)
+					# print(fileName)
 			elif curState == statePos:
 				posResult = rePos.match(line)
 				# print(line)
@@ -58,7 +58,7 @@ for file in os.listdir("."):
 				isRotate = reTrue.match(line)
 				if notRotate != None:
 					box = (x, y, x + w, y + h)
-					print(box)
+					# print(box)
 					imgFrame = imgFile.crop(box)
 					if not os.path.exists(path + "\\" + filePath):
 						os.mkdir(path + "\\" + filePath)			
@@ -68,8 +68,10 @@ for file in os.listdir("."):
 					curState = stateFile
 				elif isRotate != None:
 					box = (x, y, x + h, y + w)
-					print(box)
+					# print(box)
 					imgFrame = imgFile.crop(box)
+					imgFrame = imgFrame.rotate(90, Image.NEAREST, True)
+					# imgFrame.resize((w, h))
 					if not os.path.exists(path + "\\" + filePath):
 						os.mkdir(path + "\\" + filePath)			
 					fullFilePath = path + "\\" + filePath + "\\" + fileName
